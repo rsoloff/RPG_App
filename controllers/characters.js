@@ -17,11 +17,12 @@ function updateCharacter(req, res) {
 
     if (req.body.attack) character.attack = req.body.attack;
     if (req.body.defense) character.defense = req.body.defense;
-    if (req.body.maxHp) character.maxHp = req.body.maxHp;
+    if (req.body.currentDefense) character.currentDefense = req.body.currentDefense;
     if (req.body.currentHp) character.currentHp = req.body.currentHp;
     if (req.body.level) character.level = req.body.level;
     if (req.body.exp) character.exp = req.body.exp;
     if (req.body.currentTp) character.currentTp = req.body.currentTp;
+    if (req.body.actions) character.actions = req.body.actions;
 
     character.save(function(err) {
       if (err) res.json({message: err + '. Could not update character'});

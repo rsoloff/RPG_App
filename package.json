@@ -20,6 +20,8 @@
     "body-parser": "^1.14.1",
     "express": "^4.13.3",
     "mongoose": "^4.3.0",
+    "mongoose-seed": "^0.1.5",
+    "mongoose-seeder": "^1.2.1",
     "morgan": "^1.6.1"
   }
 }

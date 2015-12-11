@@ -1,0 +1,168 @@
+{
+  "enemies": {
+    "_model": "Enemy",
+    "beowolf": {
+      "name": "Beowolf",
+      "attack": 10,
+      "defense": 15,
+      "maxHp": 1000,
+      "currentHp": 1000,
+      "ExpYield": 50,
+      "basicDamage": 50
+    },
+    "boarbatusk": {
+      "name": "boarbatusk",
+      "attack": 10,
+      "defense": 25,
+      "maxHp": 1500,
+      "currentHp": 1500,
+      "ExpYield": 100,
+      "basicDamage": 75
+    },
+    "ursa": {
+      "name": "Ursa",
+      "attack": 20,
+      "defense": 20,
+      "maxHp": 2000,
+      "currentHp": 2000,
+      "ExpYield": 200,
+      "basicDamage": 65
+    },
+    "deathStalker": {
+      "name": "Death Stalker",
+      "attack": 15,
+      "defense": 30,
+      "maxHp": 2500,
+      "currentHp": 2500,
+      "ExpYield": 400,
+      "basicDamage": 50
+    },
+    "giantNevermore": {
+      "name": "Giant Nevermore",
+      "attack": 25,
+      "defense": 20,
+      "maxHp": 3000,
+      "currentHp": 3000,
+      "ExpYield": 0,
+      "basicDamage": 75
+    }
+  },
+  "items": {
+    "_model": "Item",
+    "healthPotion": {
+      "name": "Health Potion",
+      "description": "Restores half of your maximum HP."
+    },
+    "healthPotion2": {
+      "name": "Health Potion",
+      "description": "Restores half of your maximum HP."
+    },
+    "staminaPotion": {
+      "name": "Stamina Potion",
+      "description": "Restores half of your maximum TP."
+    },
+    "staminaPotion2": {
+      "name": "Stamina Potion",
+      "description": "Restores half of your maximum TP."
+    },
+    "maxPotion": {
+      "name": "Max Potion",
+      "description": "Restores all of your HP and TP."
+    }
+  },
+  "techniques": {
+    "_model": "Technique",
+    "strongSlash": {
+      "name": "Strong Slash",
+      "description": "An incredibly powerful strike. Deals 1.5 * normal damage.",
+      "levelObtained": 1,
+      "availability": true,
+      "tpCost": 10
+    },
+    "powerCharge": {
+      "name": "Power Charge",
+      "description": "Focuses your energy to prepare one massive attack. Next attack deals 2.5 * normal damage.",
+      "levelObtained": 3,
+      "availability": false,
+      "tpCost": 15
+    },
+    "shedArmor": {
+      "name": "Shed Armor",
+      "description": "Remove some of your armor to gain speed. Defense is halfed but you can attack twice a turn for the rest of the battle.",
+      "levelObtained": 5,
+      "availability": false,
+      "tpCost": 30
+    }
+  },
+  "characters": {
+    "_model": "Character",
+    "fighter": {
+      "name": "Fighter",
+      "attack": 15,
+      "defense": 10,
+      "currentDefense": 10,
+      "maxHp": 1000,
+      "currentHp": 1000,
+      "level": 1,
+      "exp": 0,
+      "maxTp": 100,
+      "currentTp": 100,
+      "itemCapacity": 5,
+      "basicDamage": 75,
+      "actions": 1,
+      "techniques": [
+        {
+          "technique": "->techniques.strongSlash",
+          "name": "->techniques.strongSlash.name",
+          "description": "->techniques.strongSlash.description",
+          "levelObtained": "->techniques.strongSlash.levelObtained",
+          "availability": "->techniques.strongSlash.availability",
+          "tpCost": "->techniques.strongSlash.tpCost"
+        },
+        {
+          "technique": "->techniques.powerCharge",
+          "name": "->techniques.powerCharge.name",
+          "description": "->techniques.powerCharge.description",
+          "levelObtained": "->techniques.powerCharge.levelObtained",
+          "availability": "->techniques.powerCharge.availability",
+          "tpCost": "->techniques.powerCharge.tpCost"
+        },
+        {
+          "technique": "->techniques.shedArmor",
+          "name": "->techniques.shedArmor.name",
+          "description": "->techniques.shedArmor.description",
+          "levelObtained": "->techniques.shedArmor.levelObtained",
+          "availability": "->techniques.shedArmor.availability",
+          "tpCost": "->techniques.shedArmor.tpCost"
+        }
+      ],
+      "items": [
+        {
+          "item": "->items.healthPotion",
+          "name": "->items.healthPotion.name",
+          "description": "->items.healthPotion.description"
+        },
+        {
+          "item": "->items.healthPotion2",
+          "name": "->items.healthPotion.name",
+          "description": "->items.healthPotion.description"
+        },
+        {
+          "item": "->items.staminaPotion",
+          "name": "->items.staminaPotion.name",
+          "description": "->items.staminaPotion.description"
+        },
+        {
+          "item": "->items.staminaPotion2",
+          "name": "->items.staminaPotion.name",
+          "description": "->items.staminaPotion.description"
+        },
+        {
+          "item": "->items.maxPotion",
+          "name": "->items.maxPotion.name",
+          "description": "->items.maxPotion.description"
+        }
+      ]
+    }
+  }
+}

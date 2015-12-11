@@ -4,6 +4,7 @@ var CharacterSchema = new mongoose.Schema({
   name              : String,
   attack            : Number,
   defense           : Number,
+  currentDefense    : Number,
   maxHp             : Number,
   currentHp         : Number,
   level             : Number,
@@ -12,13 +13,14 @@ var CharacterSchema = new mongoose.Schema({
   currentTp         : Number,
   itemCapacity      : Number,
   basicDamage       : Number,
+  turnNumber        : Number,
   techniques : [{
-      type : mongoose.Schema.Types.ObjectId,
-      ref  : 'Technique'
+      ref  : 'Technique',
+      type : mongoose.Schema.Types.ObjectId
   }],
   items  : [{
-      type : mongoose.Schema.Types.ObjectId,
-      ref  : 'Item'
+      ref  : 'Item',
+      type : mongoose.Schema.Types.ObjectId
   }]
 });
 
