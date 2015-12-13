@@ -1,5 +1,12 @@
 var Character = require('../models/Character');
 
+function getAllCharacters(req, res) {
+  Character.find(function(err, characters) {
+    if (err) res.json({message: err + '. Could not get characters'});
+    res.json({characters: characters});
+  });
+}
+
 function getCharacter(req, res) {
   var id = req.params.id;
 
@@ -32,6 +39,7 @@ function updateCharacter(req, res) {
 }
 
 module.exports = {
+  getAllCharacters  : getAllCharacters,
   getCharacter      : getCharacter,
   updateCharacter   : updateCharacter
 };

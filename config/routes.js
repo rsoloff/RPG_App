@@ -7,9 +7,15 @@ const enemiesController    = require('../controllers/enemies');
 const itemsController      = require('../controllers/items');
 const techniquesController = require('../controllers/techniques');
 
+router.route('/characters')
+  .get(charactersController.getAllCharacters);
+
 router.route('/characters/:id')
   .get(charactersController.getCharacter)
   .patch(charactersController.updateCharacter);
+
+router.route('/enemies')
+  .get(enemiesController.getAllEnemies);
 
 router.route('/enemies/:id')
   .get(enemiesController.getEnemy)

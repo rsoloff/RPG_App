@@ -1,5 +1,12 @@
 var Enemy = require('../models/Enemy');
 
+function getAllEnemies(req, res) {
+  Enemy.find(function(err, enemies) {
+    if (err) res.json({message: err + '. Could not get enemies'});
+    res.json({enemies: enemies});
+  });
+}
+
 function getEnemy(req, res) {
   var id = req.params.id;
 
@@ -25,6 +32,7 @@ function updateEnemy(req, res) {
 }
 
 module.exports = {
+  getAllEnemies : getAllEnemies,
   getEnemy      : getEnemy,
   updateEnemy   : updateEnemy
 };

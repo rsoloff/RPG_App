@@ -7,31 +7,18 @@ var Technique   = require('./models/Technique.js');
 var seeder      = require('mongoose-seeder');
 var data        = require('./data.json');
 
-mongoose.connect(process.env.MONGOLAB_URI||'mongodb://localhost/rpgApp');
+mongoose.connect('mongodb://127.0.0.1:27017/rpgApp');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', callback=>console.log('mongoose connected'));
+db.once('open', (callback)=>console.log('mongoose connected'));
 
 seeder.seed(data, {dropDatabase: false}).then(function(rpgApp) {
-  console.log(rpgApp)
   console.log('database has been seeded');
-  //mongoose.connection.close();
+  mongoose.connection.close();
 }).catch(function(err) {
   console.log(err + 'cannot seed database');
   mongoose.connection.close();
 });
-
-/*seeder.connect('mongodb://localhost/rpgApp'), function() {
-  seeder.loadModels([
-    './models/Character',
-    './models/Enemy',
-    './models/Item',
-    './models/Technique'
-  ]);
-  seeder.clearModels(['Character', 'Enemy', 'Item', 'Technique'], function() {
-    seeder.populateModels(data)
-  })
-};
 
 var fighter = new Character({
   name              : 'Fighter',
@@ -46,40 +33,119 @@ var fighter = new Character({
   currentTp         : 100,
   itemCapacity      : 5,
   basicDamage       : 75,
-  actions           : 1,
-  techniques : [{
-    { name          : 'Strong Slash',
-      description   : 'An incredibly powerful strike. Deals 1.5 * normal damage.',
-      levelObtained : 1,
-      availability  : true,
-      tpCost        : 10
-    },
-    { name          : 'Power Charge',
-      description   : 'Focuses your energy to prepare one massive attack. Next attack deals 2.5 * normal damage.',
-      levelObtained : 3,
-      availability  : false,
-      tpCost        : 15
-    },
-    { name          : 'Shed Armor',
-      description   : 'Remove some of your armor to gain speed. Defense is halfed but you can attack twice a turn for the rest of the battle.',
-      levelObtained : 5,
-      availability  : false,
-      tpCost        : 30
-    }
-  }],
-  items  : [
-    { name: 'Health Potion', description: 'Restores half of your maximum HP.'},
-    { name: 'Health Potion', description: 'Restores half of your maximum HP.'},
-    { name: 'Stamina Potion', description: 'Restores half of your maximum TP.'},
-    { name: 'Stamina Potion', description: 'Restores half of your maximum TP.'},
-    { name: 'Max Potion', description: 'Restores all of your HP and TP.'}
-  ]
-})
+  actions           : 1
+});
 
 fighter.save(function (err) {
   if(err){
     console.log(err)
   }else{
     console.log("Fighter saved");
+    var strongSlash = new Technique({
+      name: 'Strong Slash',
+      description: 'An incredibly powerful strike. Deals 1.5 * normal damage.',
+      levelObtained : 1,
+      availability  : true,
+      tpCost        : 10
+    });
+    strongSlash.save(function(err) {
+      if(err){
+        console.log(err)
+      }else{
+        console.log("Strong Slash saved");
+        fighter.techniques.push(strongSlash._id);
+        var powerCharge = new Technique({
+          name: 'Power Charge',
+          description   : 'Focuses your energy to prepare one massive attack. Next attack deals 2.5 * normal damage.',
+          levelObtained : 3,
+          availability  : false,
+          tpCost        : 15
+        });
+        powerCharge.save(function(err) {
+          if(err){
+            console.log(err)
+          }else{
+            console.log("Power Charge saved");
+            fighter.techniques.push(powerCharge._id);
+            var shedArmor = new Technique({
+                name          : 'Shed Armor',
+                description   : 'Remove some of your armor to gain speed. Defense is halfed but you can attack twice a turn for the rest of the battle.',
+                levelObtained : 5,
+                availability  : false,
+                tpCost        : 30
+            });
+            shedArmor.save(function(err) {
+              if(err){
+                console.log(err)
+              }else{
+                console.log("Shed Armor saved");
+                fighter.techniques.push(shedArmor._id);
+                var healthPotion1 = new Item({
+                  name: 'Health Potion',
+                  description: 'Restores half of your maximum HP.'
+                });
+                healthPotion1.save(function(err) {
+                  if(err){
+                    console.log(err)
+                  }else{
+                    console.log("Health Potion saved");
+                    fighter.items.push(healthPotion1._id);
+                    var healthPotion2 = new Item({
+                      name: 'Health Potion',
+                      description: 'Restores half of your maximum HP.'
+                    });
+                    healthPotion2.save(function(err) {
+                      if(err){
+                        console.log(err)
+                      }else{
+                        console.log("Health Potion saved");
+                        fighter.items.push(healthPotion2._id);
+                        var staminaPotion1 = new Item({
+                          name: 'Stamina Potion',
+                          description: 'Restores half of your maximum TP.'
+                        });
+                        staminaPotion1.save(function(err) {
+                          if(err){
+                            console.log(err)
+                          }else{
+                            console.log("Stamina Potion saved");
+                            fighter.items.push(staminaPotion1._id);
+                            var staminaPotion2 = new Item({
+                              name: 'Stamina Potion',
+                              description: 'Restores half of your maximum TP.'
+                            });
+                            staminaPotion2.save(function(err) {
+                              if(err){
+                                console.log(err)
+                              }else{
+                                console.log("Stamina Potion saved");
+                                fighter.items.push(staminaPotion2._id);
+                                var maxPotion = new Item({
+                                  name: 'Max Potion',
+                                  description: 'Restores all of your HP and TP.'
+                                });
+                                maxPotion.save(function(err) {
+                                  if(err){
+                                    console.log(err)
+                                  }else{
+                                    console.log("Max Potion saved");
+                                    fighter.items.push(maxPotion._id);
+                                    fighter.save();
+                                  }
+                                })
+                              }
+                            })
+                          }
+                        })
+                      }
+                    })
+                  }
+                })
+              }
+            })
+          }
+        })
+      }
+    })
   }
-};*/
+})

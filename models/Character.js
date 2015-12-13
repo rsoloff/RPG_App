@@ -14,12 +14,12 @@ var CharacterSchema = new mongoose.Schema({
   itemCapacity      : Number,
   basicDamage       : Number,
   turnNumber        : Number,
-  techniques : [{
-      ref  : 'Technique',
-      type : mongoose.Schema.Types.ObjectId
-  }],
   items  : [{
       ref  : 'Item',
+      type : mongoose.Schema.Types.ObjectId
+  }],
+  techniques : [{
+      ref  : 'Technique',
       type : mongoose.Schema.Types.ObjectId
   }]
 });
