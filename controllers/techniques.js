@@ -1,7 +1,7 @@
 var Technique = require('../models/Technique');
 
 function getAllTechniques(req, res) {
-  Technique.find(function(err, items) {
+  Technique.find(function(err, techniques) {
     if (err) res.json({message: err + '. Could not get techniques'});
     res.json({techniques: techniques});
   });

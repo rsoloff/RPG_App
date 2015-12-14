@@ -13,7 +13,7 @@ var CharacterSchema = new mongoose.Schema({
   currentTp         : Number,
   itemCapacity      : Number,
   basicDamage       : Number,
-  turnNumber        : Number,
+  actions           : Number,
   items  : [{
       ref  : 'Item',
       type : mongoose.Schema.Types.ObjectId

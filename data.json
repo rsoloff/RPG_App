@@ -1,49 +1,49 @@
 {
   "enemies": {
     "_model": "Enemy",
-    "beowolf": {
-      "name": "Beowolf",
+    "giantRat": {
+      "name": "Giant Rat",
       "attack": 10,
-      "defense": 15,
+      "defense": 10,
+      "maxHp": 750,
+      "currentHp": 750,
+      "expYield": 50,
+      "basicDamage": 50
+    },
+    "goblin": {
+      "name": "Goblin",
+      "attack": 10,
+      "defense": 20,
       "maxHp": 1000,
       "currentHp": 1000,
-      "ExpYield": 50,
+      "expYield": 100,
       "basicDamage": 50
     },
-    "boarbatusk": {
-      "name": "Boarbatusk",
-      "attack": 10,
-      "defense": 25,
+    "orc": {
+      "name": "Orc",
+      "attack": 20,
+      "defense": 15,
       "maxHp": 1500,
       "currentHp": 1500,
-      "ExpYield": 100,
+      "expYield": 200,
       "basicDamage": 75
     },
-    "ursa": {
-      "name": "Ursa",
-      "attack": 20,
-      "defense": 20,
+    "giantSpider": {
+      "name": "Giant Spider",
+      "attack": 15,
+      "defense": 25,
       "maxHp": 2000,
       "currentHp": 2000,
-      "ExpYield": 200,
-      "basicDamage": 65
+      "expYield": 400,
+      "basicDamage": 75
     },
-    "deathStalker": {
-      "name": "Death Stalker",
-      "attack": 15,
-      "defense": 30,
-      "maxHp": 2500,
-      "currentHp": 2500,
-      "ExpYield": 400,
-      "basicDamage": 50
-    },
-    "giantNevermore": {
-      "name": "Giant Nevermore",
+    "dragon": {
+      "name": "Dragon",
       "attack": 25,
       "defense": 20,
-      "maxHp": 3000,
-      "currentHp": 3000,
-      "ExpYield": 0,
+      "maxHp": 2500,
+      "currentHp": 2500,
+      "expYield": 0,
       "basicDamage": 75
     }
   }
