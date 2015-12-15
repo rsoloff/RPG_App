@@ -8,8 +8,10 @@ var app         = express();
 mongoose.connect(process.env.MONGOLAB_URI||'mongodb://127.0.0.1:27017/rpgApp');
 
 var db = mongoose.connection;
-db.on('error',console.error.bind(console, 'connection error:'));
-db.once('open',  callback=>console.log('mongoose connected'));
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('mongoose connected')
+});
 
 app.use(logger('dev'));
 app.use(express.static(__dirname+'/public'));

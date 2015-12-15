@@ -9,7 +9,9 @@ var data        = require('./data.json');
 mongoose.connect('mongodb://127.0.0.1:27017/rpgApp');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', (callback)=>console.log('mongoose connected'));
+db.once('open', function() {
+  console.log('mongoose connected')
+});
 
 seeder.seed(data, {dropDatabase: false}).then(function(rpgApp) {
   console.log('database has been seeded');
