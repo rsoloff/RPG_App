@@ -1,11 +1,11 @@
-const express    = require('express');
-const router     = express.Router();
-const bodyParser = require('body-parser');
+var express    = require('express');
+var router     = express.Router();
+var bodyParser = require('body-parser');
 
-const charactersController = require('../controllers/characters');
-const enemiesController    = require('../controllers/enemies');
-const itemsController      = require('../controllers/items');
-const techniquesController = require('../controllers/techniques');
+var charactersController = require('../controllers/characters');
+var enemiesController    = require('../controllers/enemies');
+var itemsController      = require('../controllers/items');
+var techniquesController = require('../controllers/techniques');
 
 router.route('/characters')
   .get(charactersController.getAllCharacters);

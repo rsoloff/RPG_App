@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
 
 var EnemySchema = new mongoose.Schema({
   name          : String,

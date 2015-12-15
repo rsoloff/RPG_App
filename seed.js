@@ -1,4 +1,3 @@
-'use strict'
 var mongoose    = require('mongoose');
 var Character   = require('./models/Character.js');
 var Enemy       = require('./models/Enemy.js');

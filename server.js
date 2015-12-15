@@ -1,10 +1,9 @@
-'use strict'
-const express     = require('express');
-const logger      = require('morgan');
-const bodyParser  = require('body-parser');
-const mongoose    = require('mongoose');
-const routes      = require('./config/routes');
-const app         = express();
+var express     = require('express');
+var logger      = require('morgan');
+var bodyParser  = require('body-parser');
+var mongoose    = require('mongoose');
+var routes      = require('./config/routes');
+var app         = express();
 
 mongoose.connect(process.env.MONGOLAB_URI||'mongodb://127.0.0.1:27017/rpgApp');
 
