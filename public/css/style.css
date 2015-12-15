@@ -1,0 +1,10 @@
+body {
+}
+
+#character {
+  max-width: 300px;
+}
+
+#enemy {
+  max-height: 300px;
+}

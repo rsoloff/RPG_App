@@ -7,12 +7,21 @@ $(document).ready(function() {
 });
 
 var renderCharacter = function(data) {
+  $('.Character-Select').show();
+  $('.chosen-character').empty();
+  $attack.hide();
+  $techniques.hide();
+  $items.hide();
+  $restart.hide();
   $restart.hide();
   var characterList = data.characters;
   for (var i = 0; i < characterList.length; i++) {
     var $h2 = $('<h2>');
     $h2.html(characterList[i].name);
     $characters.append($h2);
+    var $img = $('<img id="character">')
+    $img.attr('src', characterList[i].image);
+    $characters.append($img);
     var selected = characterList[i];
     $h2.on('click', function() {
       currentCharacter = selected;
@@ -27,8 +36,8 @@ var renderCharacter = function(data) {
       $('.chosen-character').append($h2);
       $('.Character-Select').hide();
       $characters.empty();
-      var $h1 = $('<h1>').html('You have chosen to be a ' + currentCharacter.name + ' on your quest.');
-      $text.append($h1);
+      var $p = $('<p>').html('You have chosen to be a ' + currentCharacter.name + ' on your quest.');
+      $text.append($p);
       $text.on('click', function() {
         $text.empty();
         $text.unbind('click');
@@ -39,18 +48,18 @@ var renderCharacter = function(data) {
 };
 
 var openingText = function() {
-  var $h1 = $('<h1>').html('You set out on your great quest!');
-  $text.append($h1);
+  var $p = $('<p>').html('You set out on your great quest!');
+  $text.append($p);
   $text.on('click', function() {
     $text.empty();
     $text.unbind('click');
-    var $h1 = $('<h1>').html("What is your quest you ask?");
-    $text.append($h1);
+    var $p = $('<p>').html("What is your quest you ask?");
+    $text.append($p);
     $text.on('click', function() {
       $text.empty();
       $text.unbind('click');
-      var $h1 = $('<h1>').html("I don't know. Go kill some monsters or something.");
-      $text.append($h1);
+      var $p = $('<p>').html("I don't know. Go kill some monsters or something.");
+      $text.append($p);
       $text.on('click', function() {
         $text.empty();
         $text.unbind('click');
@@ -70,12 +79,15 @@ var renderEnemy = function(data) {
     winGame();
   } else {
     currentEnemy = enemyList[enemyNumber];
-    var $h1 = $('<h1>').html('You are attacked by a ' + currentEnemy.name + '!');
-    var $h2 = $('<h2>').html(currentEnemy.name);
-    $text.append($h1);
+    var $p = $('<p>').html('You are attacked by the ' + currentEnemy.name + '!');
+    $text.append($p);
     $text.on('click', function() {
       $text.empty();
+      var $h2 = $('<h2>').html(currentEnemy.name);
       $enemy.append($h2);
+      var $img = $('<img id="enemy">')
+      $img.attr('src', currentEnemy.image);
+      $enemy.append($img);
       enemyNumber += 1;
       $text.unbind('click');
       startTurn();
@@ -94,8 +106,8 @@ var setItems = function(data) {
 };
 
 var startTurn = function() {
-  var $h1 = $('<h1>').html('It is your turn.');
-  $text.append($h1);
+  var $p = $('<p>').html('It is your turn.');
+  $text.append($p);
   $text.on('click', function() {
     $text.empty();
     $text.unbind('click');
@@ -124,7 +136,7 @@ var itemMenu = function() {
 
 var chooseTechnique = function() {
   $techniqueList.empty();
-  for (var i = 0; i < allTechniques.length; i++) {
+  allTechniques.forEach(function (dummy, i) {
     var possibleTechnique = allTechniques[i];
     if (possibleTechnique.availability === true) {
       var $h3 = $('<h3>')
@@ -136,7 +148,7 @@ var chooseTechnique = function() {
         useTechnique(choice);
       });
     };
-  };
+  });
   $attack.hide();
   $techniques.hide();
   $items.hide();
@@ -146,11 +158,19 @@ var chooseTechnique = function() {
 
 var chooseItem = function() {
   $itemList.empty();
-  for (var i = 0; i < allItems.length; i++) {
-    var $h3 = $('<h3>');
-    $h3.html(allItems[i].name);
-    $itemList.append($h3);
-  };
+  allItems.forEach(function (dummy, i) {
+    var possibleItem = allItems[i];
+    if (possibleItem.used === false) {
+      var $h3 = $('<h3>')
+      $h3.html(allItems[i].name);
+      $h3.attr('listing', i);
+      $itemList.append($h3);
+      $h3.click(function() {
+        var choice = $h3.attr('listing');
+        useItem(choice);
+      });
+    };
+  });
   $attack.hide();
   $techniques.hide();
   $items.hide();
@@ -162,8 +182,8 @@ var playerAttack = function() {
   $attack.unbind('click');
   $techniques.unbind('click');
   $items.unbind('click');
-  var $h1 = $('<h1>').html('You slash the ' + currentEnemy.name + ' with your sword.');
-  $text.append($h1);
+  var $p = $('<p>').html('You slash the ' + currentEnemy.name + ' with your sword.');
+  $text.append($p);
   $text.on('click', function() {
     $text.empty();
     $text.unbind('click');
@@ -178,8 +198,8 @@ var playerAttack = function() {
     var damage = Math.floor(attack/defense * basicDamage * 2 * damageModifier * chargeModifier);
     currentEnemy.currentHp -= damage;
     chargeModifier = 1;
-    var $h1 = $('<h1>').html(currentEnemy.name + ' took ' + damage + ' damage!');
-    $text.append($h1);
+    var $p = $('<p>').html(currentEnemy.name + ' took ' + damage + ' damage!');
+    $text.append($p);
     $text.on('click', function() {
       $text.empty();
       $text.unbind('click');
@@ -203,14 +223,27 @@ var useTechnique = function(i) {
   };
 };
 
+var useItem = function(i) {
+  $attack.show();
+  $techniques.show();
+  $items.show();
+  $techniqueList.empty();
+  $itemList.empty();
+  if (i == 0) {
+    maxPotion(i);
+  } else if (i == 1) {
+    maxPotion(i);
+  };
+};
+
 var strongSlash = function(i) {
   $attack.unbind('click');
   $techniques.unbind('click');
   $items.unbind('click');
   var currentTechnique = allTechniques[i];
   if (currentCharacter.currentTp < currentTechnique.tpCost) {
-    var $h1 = $('<h1>').html('You do not have enough TP to use this move.');
-    $text.append($h1);
+    var $p = $('<p>').html('You do not have enough TP to use this move.');
+    $text.append($p);
     $text.on('click', function() {
       $text.empty();
       $text.unbind('click');
@@ -228,13 +261,13 @@ var strongSlash = function(i) {
     var basicDamage = currentCharacter.basicDamage;
     var damageModifier = 0.8 + (Math.random() * (1.2 - 0.8));
     var damage = Math.floor(attack/defense * basicDamage * 2 *  damageModifier * 1.5 * chargeModifier);
-    var $h1 = $('<h1>').html('You unleash a powerful strike on the ' + currentEnemy.name + '!');
-    $text.append($h1);
+    var $p = $('<p>').html('You unleash a powerful strike on the ' + currentEnemy.name + '!');
+    $text.append($p);
     $text.on('click', function() {
       $text.empty();
       $text.unbind('click');
-      var $h1 = $('<h1>').html(currentEnemy.name + ' took ' + damage + ' damage!');
-      $text.append($h1);
+      var $p = $('<p>').html(currentEnemy.name + ' took ' + damage + ' damage!');
+      $text.append($p);
       $text.on('click', function() {
         $text.empty();
         $text.unbind('click');
@@ -252,8 +285,8 @@ var powerCharge = function(i) {
   $items.unbind('click');
   var currentTechnique = allTechniques[i];
   if (currentCharacter.currentTp < currentTechnique.tpCost) {
-    var $h1 = $('<h1>').html('You do not have enough TP to use this move.');
-    $text.append($h1);
+    var $p = $('<p>').html('You do not have enough TP to use this move.');
+    $text.append($p);
     $text.on('click', function() {
       $text.empty();
       $text.unbind('click');
@@ -261,8 +294,8 @@ var powerCharge = function(i) {
     });
   } else {
     if (charged === true) {
-      var $h1 = $('<h1>').html('You have already charged.');
-      $text.append($h1);
+      var $p = $('<p>').html('You have already charged.');
+      $text.append($p);
       $text.on('click', function() {
         $text.empty();
         $text.unbind('click');
@@ -272,8 +305,8 @@ var powerCharge = function(i) {
       charged = true;
       currentCharacter.currentTp -= currentTechnique.tpCost;
       $('#tp').html(currentCharacter.currentTp + '/' + currentCharacter.maxTp);
-      var $h1 = $('<h1>').html('You are charging up for a powerful attack!');
-      $text.append($h1);
+      var $p = $('<p>').html('You are charging up for a powerful attack!');
+      $text.append($p);
       $text.on('click', function() {
         $text.empty();
         $text.unbind('click');
@@ -289,8 +322,8 @@ var shedArmor = function(i) {
   $items.unbind('click');
   var currentTechnique = allTechniques[i];
   if (currentCharacter.currentTp < currentTechnique.tpCost) {
-    var $h1 = $('<h1>').html('You do not have enough TP to use this move.');
-    $text.append($h1);
+    var $p = $('<p>').html('You do not have enough TP to use this move.');
+    $text.append($p);
     $text.on('click', function() {
       $text.empty();
       $text.unbind('click');
@@ -298,8 +331,8 @@ var shedArmor = function(i) {
     });
   } else {
     if (armored === false) {
-      var $h1 = $('<h1>').html('You have already discarded your armor.');
-      $text.append($h1);
+      var $p = $('<p>').html('You have already discarded your armor.');
+      $text.append($p);
       $text.on('click', function() {
         $text.empty();
         $text.unbind('click');
@@ -309,8 +342,8 @@ var shedArmor = function(i) {
       currentCharacter.currentTp -= currentTechnique.tpCost;
       $('#tp').html(currentCharacter.currentTp + '/' + currentCharacter.maxTp);
       armored = false;
-      var $h1 = $('<h1>').html('You have discarded your armor to increase your speed.');
-      $text.append($h1);
+      var $p = $('<p>').html('You have discarded your armor to increase your speed.');
+      $text.append($p);
       $text.on('click', function() {
         $text.empty();
         $text.unbind('click');
@@ -325,8 +358,8 @@ var checkArmor = function() {
   if (armored === false) {
     currentCharacter.actions += 1;
     if (currentCharacter.actions % 2 === 0) {
-      var $h1 = $('<h1>').html('Attack again!');
-      $text.append($h1);
+      var $p = $('<p>').html('Attack again!');
+      $text.append($p);
       $text.on('click', function() {
         $text.empty();
         $text.unbind('click');
@@ -344,12 +377,14 @@ var healthPotion = function() {
   $attack.unbind('click');
   $techniques.unbind('click');
   $items.unbind('click');
+  var currentItem = allItems[i];
+  currentItem.used = true;
   currentCharacter.currentHp += currentCharacter.maxHp / 2;
   if (currentCharacter.currentHp > currentCharacter.maxHp) {
     currentCharacter.currentHp = currentCharacter.maxHp;
   };
-  var $h1 = $('<h1>').html('Regained ' + currentCharacter.maxHp / 2 + ' HP');
-  $text.append($h1);
+  var $p = $('<p>').html('Regained ' + currentCharacter.maxHp / 2 + ' HP');
+  $text.append($p);
   $text.on('click', function() {
     $text.empty();
     $text.unbind('click');
@@ -362,12 +397,14 @@ var staminaPotion = function() {
   $attack.unbind('click');
   $techniques.unbind('click');
   $items.unbind('click');
+  var currentItem = allItems[i];
+  currentItem.used = true;
   currentCharacter.currentTp += currentCharacter.maxTp / 2;
   if (currentCharacter.currentTp > currentCharacter.maxTp) {
     currentCharacter.currentTp = currentCharacter.maxTp;
   };
-  var $h1 = $('<h1>').html('Regained ' + currentCharacter.maxTp / 2 + ' TP');
-  $text.append($h1);
+  var $p = $('<p>').html('Regained ' + currentCharacter.maxTp / 2 + ' TP');
+  $text.append($p);
   $text.on('click', function() {
     $text.empty();
     $text.unbind('click');
@@ -376,14 +413,16 @@ var staminaPotion = function() {
   });
 };
 
-var maxPotion = function() {
+var maxPotion = function(i) {
   $attack.unbind('click');
   $techniques.unbind('click');
   $items.unbind('click');
+  var currentItem = allItems[i];
+  currentItem.used = true;
   currentCharacter.currentHp = currentCharacter.maxHp;
   currentCharacter.currentTp = currentCharacter.maxTp;
-  var $h1 = $('<h1>').html('HP and TP fully restored');
-  $text.append($h1);
+  var $p = $('<p>').html('HP and TP fully restored');
+  $text.append($p);
   $text.on('click', function() {
     $text.empty();
     $text.unbind('click');
@@ -396,8 +435,8 @@ var maxPotion = function() {
 var checkWin = function() {
   if (currentEnemy.currentHp <= 0) {
     $enemy.empty();
-    var $h1 = $('<h1>').html('Congratulations! You defeated the ' + currentEnemy.name + "!");
-    $text.append($h1);
+    var $p = $('<p>').html('You defeated the ' + currentEnemy.name + "!");
+    $text.append($p);
     $text.on('click', function() {
       $text.empty();
       $text.unbind('click');
@@ -415,8 +454,8 @@ var checkWin = function() {
 var gainExperience = function() {
   armored = true;
   currentCharacter.actions = 1;
-  var $h1 = $('<h1>').html(currentCharacter.name + ' gained ' + currentEnemy.expYield + ' exp.');
-  $text.append($h1);
+  var $p = $('<p>').html(currentCharacter.name + ' gained ' + currentEnemy.expYield + ' exp.');
+  $text.append($p);
   $text.on('click', function() {
     $text.empty();
     $text.unbind('click');
@@ -437,21 +476,21 @@ var gainExperience = function() {
 };
 
 var levelTwo = function() {
-  var $h1 = $('<h1>').html(currentCharacter.name + ' has reached Level 2!');
-  $text.append($h1);
+  var $p = $('<p>').html(currentCharacter.name + ' has reached Level 2!');
+  $text.append($p);
   $text.on('click', function() {
     $text.empty();
     $text.unbind('click');
     currentCharacter.attack = 225;
-    var $h1 = $('<h1>').html(currentCharacter.name + "'s attack has increased to " + currentCharacter.attack + ".");
-    $text.append($h1);
+    var $p = $('<p>').html(currentCharacter.name + "'s attack has increased to " + currentCharacter.attack + ".");
+    $text.append($p);
     $text.on('click', function() {
       $text.empty();
       $text.unbind('click');
       currentCharacter.defense = 175;
       currentCharacter.currentDefense = currentCharacter.defense;
-      var $h1 = $('<h1>').html(currentCharacter.name + "'s defense has increased to " + currentCharacter.defense + ".");
-      $text.append($h1);
+      var $p = $('<p>').html(currentCharacter.name + "'s defense has increased to " + currentCharacter.defense + ".");
+      $text.append($p);
       $text.on('click', function() {
         $text.empty();
         $text.unbind('click');
@@ -462,15 +501,15 @@ var levelTwo = function() {
 };
 
 var levelThree = function() {
-  var $h1 = $('<h1>').html(currentCharacter.name + ' has reached Level 3!');
-  $text.append($h1);
+  var $p = $('<p>').html(currentCharacter.name + ' has reached Level 3!');
+  $text.append($p);
   $text.on('click', function() {
     $text.empty();
     $text.unbind('click');
     currentCharacter.currentDefense = currentCharacter.defense;
     allTechniques[1].availability = true;
-    var $h1 = $('<h1>').html(currentCharacter.name + ' has learned ' + allTechniques[1].name + '!');
-    $text.append($h1);
+    var $p = $('<p>').html(currentCharacter.name + ' has learned ' + allTechniques[1].name + '!');
+    $text.append($p);
     $text.on('click', function() {
       $text.empty();
       $text.unbind('click');
@@ -480,21 +519,21 @@ var levelThree = function() {
 };
 
 var levelFour = function() {
-  var $h1 = $('<h1>').html(currentCharacter.name + ' has reached Level 4!');
-  $text.append($h1);
+  var $p = $('<p>').html(currentCharacter.name + ' has reached Level 4!');
+  $text.append($p);
   $text.on('click', function() {
     $text.empty();
     $text.unbind('click');
     currentCharacter.attack = 275;
-    var $h1 = $('<h1>').html(currentCharacter.name + "'s attack has increased to " + currentCharacter.attack + ".");
-    $text.append($h1);
+    var $p = $('<p>').html(currentCharacter.name + "'s attack has increased to " + currentCharacter.attack + ".");
+    $text.append($p);
     $text.on('click', function() {
       $text.empty();
       $text.unbind('click');
       currentCharacter.defense = 225;
       currentCharacter.currentDefense = currentCharacter.defense;
-      var $h1 = $('<h1>').html(currentCharacter.name + "'s defense has increased to " + currentCharacter.defense + ".");
-      $text.append($h1);
+      var $p = $('<p>').html(currentCharacter.name + "'s defense has increased to " + currentCharacter.defense + ".");
+      $text.append($p);
       $text.on('click', function() {
         $text.empty();
         $text.unbind('click');
@@ -505,15 +544,15 @@ var levelFour = function() {
 };
 
 var levelFive = function() {
-  var $h1 = $('<h1>').html(currentCharacter.name + ' has reached Level 5!');
-  $text.append($h1);
+  var $p = $('<p>').html(currentCharacter.name + ' has reached Level 5!');
+  $text.append($p);
   $text.on('click', function() {
     $text.empty();
     $text.unbind('click');
     currentCharacter.currentDefense = currentCharacter.defense;
     allTechniques[2].availability = true;
-    var $h1 = $('<h1>').html(currentCharacter.name + ' has learned ' + allTechniques[2].name + '!');
-    $text.append($h1);
+    var $p = $('<p>').html(currentCharacter.name + ' has learned ' + allTechniques[2].name + '!');
+    $text.append($p);
     $text.on('click', function() {
       $text.empty();
       $text.unbind('click');
@@ -523,18 +562,24 @@ var levelFive = function() {
 };
 
 var winGame = function() {
-  var $h1 = $('<h1>').html('Congratulations! You have successfully completed your quest!');
-  $text.append($h1);
+  var $p = $('<p>').html('Congratulations! You have successfully completed your quest!');
+  $text.append($p);
   $text.on('click', function() {
     $text.empty();
     $text.unbind('click');
-    var $h1 = $('<h1>').html('I have no idea why you needed to kill the dragon but good job!');
-    $text.append($h1);
+    var $p = $('<p>').html('I have no idea why you were suddenly fighting the Devil but good job!');
+    $text.append($p);
     $text.on('click', function() {
       $text.empty();
       $text.unbind('click');
-      $restart.show();
-      $restart.on('click', restartGame);
+      var $p = $('<p>').html("Peace has been restored to the land, I guess. Sure let's go with that.");
+      $text.append($p);
+      $text.on('click', function() {
+        $text.empty();
+        $text.unbind('click');
+        $restart.show();
+        $restart.on('click', restartGame);
+      });
     });
   });
 };
@@ -545,8 +590,8 @@ var enemyAttack = function() {
   var basicDamage = currentEnemy.basicDamage;
   var damageModifier = 0.8 + (Math.random() * (1.2 - 0.8));
   var damage = Math.floor(attack/defense * basicDamage * 2 * damageModifier);
-  var $h1 = $('<h1>').html(currentEnemy.name + ' attacks! You took ' + damage + ' damage!');
-  $text.append($h1);
+  var $p = $('<p>').html(currentEnemy.name + ' attacks! You took ' + damage + ' damage!');
+  $text.append($p);
   $text.on('click', function() {
     $text.empty();
     $text.unbind('click');
@@ -562,8 +607,8 @@ var checkLoss = function() {
       currentCharacter.currentHp = 0;
       $('#hp').html(currentCharacter.currentHp + '/' + currentCharacter.maxHp);
     };
-    var $h1 = $('<h1>').html('You are dead!');
-    $text.append($h1);
+    var $p = $('<p>').html('You are dead!');
+    $text.append($p);
     $restart.show();
     $restart.on('click', restartGame);
     enemyNumber = 0;

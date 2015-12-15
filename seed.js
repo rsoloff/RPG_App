@@ -33,7 +33,8 @@ var fighter = new Character({
   currentTp         : 100,
   itemCapacity      : 5,
   basicDamage       : 75,
-  actions           : 1
+  actions           : 1,
+  image             : "http://vignette2.wikia.nocookie.net/dissidiadreamcharacters/images/6/6d/Warrior_of_Light_(Alt_2_EX_Mode).png/revision/latest/scale-to-width-down/378?cb=20130702003901"
 });
 
 fighter.save(function (err) {
@@ -80,27 +81,27 @@ fighter.save(function (err) {
               }else{
                 console.log("Shed Armor saved");
                 fighter.techniques.push(shedArmor._id);
-                var healthPotion1 = new Item({
-                  name: 'Health Potion',
-                  description: 'Restores half of your maximum HP.',
+                var maxPotion1 = new Item({
+                  name: 'Max Potion',
+                  description: 'Restores all of your HP and TP.',
                   used: false
                 });
-                healthPotion1.save(function(err) {
+                maxPotion1.save(function(err) {
                   if(err){
                     console.log(err)
                   }else{
-                    console.log("Health Potion saved");
-                    fighter.items.push(healthPotion1._id);
-                    var healthPotion2 = new Item({
-                      name: 'Health Potion',
-                      description: 'Restores half of your maximum HP.',
+                    console.log("Max Potion saved");
+                    fighter.items.push(maxPotion1._id);
+                    var maxPotion2 = new Item({
+                      name: 'Max Potion',
+                      description: 'Restores all of your HP and TP.',
                       used: false
                     });
-                    healthPotion2.save(function(err) {
+                    maxPotion2.save(function(err) {
                       if(err){
                         console.log(err)
                       }else{
-                        console.log("Health Potion saved");
+                        console.log("Max Potion saved");
                         fighter.items.push(healthPotion2._id);
                         var staminaPotion1 = new Item({
                           name: 'Stamina Potion',

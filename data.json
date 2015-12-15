@@ -1,50 +1,55 @@
 {
   "enemies": {
     "_model": "Enemy",
-    "giantRat": {
-      "name": "Giant Rat",
+    "goblin": {
+      "name": "Goblin",
       "attack": 100,
       "defense": 100,
       "maxHp": 750,
       "currentHp": 750,
       "expYield": 50,
-      "basicDamage": 50
+      "basicDamage": 50,
+      "image": "http://orig05.deviantart.net/b56f/f/2013/227/a/6/goblin_transparent_by_st0ven-d6i8yhd.png"
     },
-    "goblin": {
-      "name": "Goblin",
+    "golem": {
+      "name": "Golem",
       "attack": 100,
       "defense": 150,
       "maxHp": 1000,
       "currentHp": 1000,
       "expYield": 100,
-      "basicDamage": 50
+      "basicDamage": 50,
+      "image": "http://vignette3.wikia.nocookie.net/legendarywars/images/8/85/GolemPortraitHD.png/revision/latest?cb=20110830191703"
     },
-    "troll": {
-      "name": "Troll",
+    "darkKnight": {
+      "name": "Dark Knight",
       "attack": 150,
       "defense": 150,
       "maxHp": 1250,
       "currentHp": 1250,
       "expYield": 200,
-      "basicDamage": 75
+      "basicDamage": 75,
+      "image": "http://img4.wikia.nocookie.net/__cb20110410161342/finalfantasy/images/a/a2/CecildsNB.png"
     },
-    "golem": {
-      "name": "Golem",
+    "dragon": {
+      "name": "Dragon",
       "attack": 175,
       "defense": 275,
       "maxHp": 1750,
       "currentHp": 1750,
       "expYield": 400,
-      "basicDamage": 75
+      "basicDamage": 75,
+      "image": "http://pngimg.com/upload/dragon_PNG994.png"
     },
-    "dragon": {
-      "name": "Dragon",
+    "devil": {
+      "name": "Devil",
       "attack": 275,
       "defense": 250,
       "maxHp": 2000,
       "currentHp": 2000,
       "expYield": 0,
-      "basicDamage": 75
+      "basicDamage": 75,
+      "image": "http://i31.tinypic.com/29d8vub.jpg"
     }
   }
 }

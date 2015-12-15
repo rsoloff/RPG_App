@@ -14,6 +14,7 @@ var CharacterSchema = new mongoose.Schema({
   itemCapacity      : Number,
   basicDamage       : Number,
   actions           : Number,
+  image             : String,
   items  : [{
       ref  : 'Item',
       type : mongoose.Schema.Types.ObjectId

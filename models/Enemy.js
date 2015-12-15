@@ -7,7 +7,8 @@ var EnemySchema = new mongoose.Schema({
   maxHp         : Number,
   currentHp     : Number,
   expYield      : Number,
-  basicDamage   : Number
+  basicDamage   : Number,
+  image         : String
 });
 
 var Enemy = mongoose.model('Enemy', EnemySchema);
