@@ -3,12 +3,11 @@ $(document).ready(function() {
   $attack.hide();
   $techniques.hide();
   $items.hide();
-  $attack.on('click', playerAttack);
-  $techniques.on('click', chooseTechnique);
-  $items.on('click', chooseItem);
-})
+  $restart.hide();
+});
 
 var renderCharacter = function(data) {
+  $restart.hide();
   var characterList = data.characters;
   for (var i = 0; i < characterList.length; i++) {
     var $h2 = $('<h2>');
@@ -26,22 +25,62 @@ var renderCharacter = function(data) {
       var $h2 = $('<h2>').attr('id', 'tp')
       $h2.html('TP: ' + currentCharacter.currentTp + '/' + currentCharacter.maxTp);
       $('.chosen-character').append($h2);
-      $('.Character-Select').html('');
+      $('.Character-Select').hide();
       $characters.empty();
-      $.get('/enemies/', renderEnemy, 'json');
+      var $h1 = $('<h1>').html('You have chosen to be a ' + currentCharacter.name + ' on your quest.');
+      $text.append($h1);
+      $text.on('click', function() {
+        $text.empty();
+        $text.unbind('click');
+        openingText();
+      });
     });
-  }
+  };
+};
+
+var openingText = function() {
+  var $h1 = $('<h1>').html('You set out on your great quest!');
+  $text.append($h1);
+  $text.on('click', function() {
+    $text.empty();
+    $text.unbind('click');
+    var $h1 = $('<h1>').html("What is your quest you ask?");
+    $text.append($h1);
+    $text.on('click', function() {
+      $text.empty();
+      $text.unbind('click');
+      var $h1 = $('<h1>').html("I don't know. Go kill some monsters or something.");
+      $text.append($h1);
+      $text.on('click', function() {
+        $text.empty();
+        $text.unbind('click');
+        $.get('/techniques/', setTechniques, 'json');
+      });
+    });
+  });
 };
 
 var renderEnemy = function(data) {
   $enemy.empty();
-  var enemyList = data.enemies;
-  var $h2 = $('<h2>');
-  currentEnemy = enemyList[enemyNumber];
-  $h2.html(enemyList[enemyNumber].name);
-  $enemy.append($h2);
-  enemyNumber += 1;
-  $.get('/techniques', setTechniques, 'json');
+  $attack.hide();
+  $techniques.hide();
+  $items.hide();
+  enemyList = data.enemies;
+  if (enemyNumber === enemyList.length) {
+    winGame();
+  } else {
+    currentEnemy = enemyList[enemyNumber];
+    var $h1 = $('<h1>').html('You are attacked by a ' + currentEnemy.name + '!');
+    var $h2 = $('<h2>').html(currentEnemy.name);
+    $text.append($h1);
+    $text.on('click', function() {
+      $text.empty();
+      $enemy.append($h2);
+      enemyNumber += 1;
+      $text.unbind('click');
+      startTurn();
+    });
+  };
 };
 
 var setTechniques = function(data) {
@@ -51,8 +90,18 @@ var setTechniques = function(data) {
 
 var setItems = function(data) {
   allItems = data.items;
-  playerTurn();
-}
+  $.get('/enemies', renderEnemy, 'json');
+};
+
+var startTurn = function() {
+  var $h1 = $('<h1>').html('It is your turn.');
+  $text.append($h1);
+  $text.on('click', function() {
+    $text.empty();
+    $text.unbind('click');
+    playerTurn();
+  });
+};
 
 var playerTurn = function() {
   $attack.show();
@@ -60,10 +109,9 @@ var playerTurn = function() {
   $items.show();
   $techniqueList.empty();
   $itemList.empty();
-};
-
-var damageEnemy = function() {
-
+  $attack.on('click', playerAttack);
+  $techniques.on('click', chooseTechnique);
+  $items.on('click', chooseItem);
 };
 
 var techniqueMenu = function() {
@@ -80,11 +128,13 @@ var chooseTechnique = function() {
     var possibleTechnique = allTechniques[i];
     if (possibleTechnique.availability === true) {
       var $h3 = $('<h3>')
-      $h3.html(allTechniques[i].name);
+      $h3.html(allTechniques[i].name + ': ' + allTechniques[i].tpCost + ' TP');
+      $h3.attr('listing', i);
       $techniqueList.append($h3);
-      $h3.on('click', function() {
-        useTechnique(i);
-      })
+      $h3.click(function() {
+        var choice = $h3.attr('listing');
+        useTechnique(choice);
+      });
     };
   };
   $attack.hide();
@@ -109,37 +159,63 @@ var chooseItem = function() {
 };
 
 var playerAttack = function() {
-  if (charged === true) {
-    chargeModifier = 2.5
-    charged = false
-  }
-  var attack = currentCharacter.attack;
-  var defense = currentEnemy.defense;
-  var basicDamage = currentCharacter.basicDamage;
-  var damageModifier = 0.8 + (Math.random() * (1.2 - 0.8));
-  var damage = Math.floor(attack/defense * basicDamage * 2 * damageModifier * chargeModifier);
-  console.log(currentEnemy.name + ' took ' + damage + ' damage');
-  currentEnemy.currentHp -= damage;
-  //console.log(currentEnemy.currentHp);
-  chargeModifier = 1;
-  checkWin();
+  $attack.unbind('click');
+  $techniques.unbind('click');
+  $items.unbind('click');
+  var $h1 = $('<h1>').html('You slash the ' + currentEnemy.name + ' with your sword.');
+  $text.append($h1);
+  $text.on('click', function() {
+    $text.empty();
+    $text.unbind('click');
+    if (charged === true) {
+      chargeModifier = 2.5
+      charged = false
+    };
+    var attack = currentCharacter.attack;
+    var defense = currentEnemy.defense;
+    var basicDamage = currentCharacter.basicDamage;
+    var damageModifier = 0.8 + (Math.random() * (1.2 - 0.8));
+    var damage = Math.floor(attack/defense * basicDamage * 2 * damageModifier * chargeModifier);
+    currentEnemy.currentHp -= damage;
+    chargeModifier = 1;
+    var $h1 = $('<h1>').html(currentEnemy.name + ' took ' + damage + ' damage!');
+    $text.append($h1);
+    $text.on('click', function() {
+      $text.empty();
+      $text.unbind('click');
+      checkWin();
+    })
+  });
 }
 
 var useTechnique = function(i) {
-  if (i = 1) {
+  $attack.show();
+  $techniques.show();
+  $items.show();
+  $techniqueList.empty();
+  $itemList.empty();
+  if (i == 0) {
     strongSlash(i);
-  } else if (i = 2) {
+  } else if (i == 1) {
     powerCharge(i);
-  } else if (i = 3) {
+  } else if (i == 2) {
     shedArmor(i);
   };
 };
 
 var strongSlash = function(i) {
+  $attack.unbind('click');
+  $techniques.unbind('click');
+  $items.unbind('click');
   var currentTechnique = allTechniques[i];
   if (currentCharacter.currentTp < currentTechnique.tpCost) {
-    console.log('You do not have enough TP to use this move');
-    playerTurn();
+    var $h1 = $('<h1>').html('You do not have enough TP to use this move.');
+    $text.append($h1);
+    $text.on('click', function() {
+      $text.empty();
+      $text.unbind('click');
+      playerTurn();
+    });
   } else {
     if (charged === true) {
       chargeModifier = 2.5
@@ -147,55 +223,100 @@ var strongSlash = function(i) {
     }
     currentCharacter.currentTp -= currentTechnique.tpCost;
     $('#tp').html(currentCharacter.currentTp + '/' + currentCharacter.maxTp);
-    console.log(currentCharacter.currentTp);
     var attack = currentCharacter.attack;
     var defense = currentEnemy.defense;
     var basicDamage = currentCharacter.basicDamage;
     var damageModifier = 0.8 + (Math.random() * (1.2 - 0.8));
     var damage = Math.floor(attack/defense * basicDamage * 2 *  damageModifier * 1.5 * chargeModifier);
-    console.log(currentEnemy.name + ' took ' + damage + ' damage');
-    currentEnemy.currentHp -= damage;
-    //console.log(currentEnemy.currentHp);
-    chargeModifier = 1;
-    checkWin();
+    var $h1 = $('<h1>').html('You unleash a powerful strike on the ' + currentEnemy.name + '!');
+    $text.append($h1);
+    $text.on('click', function() {
+      $text.empty();
+      $text.unbind('click');
+      var $h1 = $('<h1>').html(currentEnemy.name + ' took ' + damage + ' damage!');
+      $text.append($h1);
+      $text.on('click', function() {
+        $text.empty();
+        $text.unbind('click');
+        currentEnemy.currentHp -= damage;
+        chargeModifier = 1;
+        checkWin();
+      });
+    });
   };
 };
 
 var powerCharge = function(i) {
+  $attack.unbind('click');
+  $techniques.unbind('click');
+  $items.unbind('click');
   var currentTechnique = allTechniques[i];
   if (currentCharacter.currentTp < currentTechnique.tpCost) {
-    console.log('You do not have enough TP to use this move');
-    playerTurn();
+    var $h1 = $('<h1>').html('You do not have enough TP to use this move.');
+    $text.append($h1);
+    $text.on('click', function() {
+      $text.empty();
+      $text.unbind('click');
+      playerTurn();
+    });
   } else {
     if (charged === true) {
-      console.log('You have already charged');
-      playerTurn();
+      var $h1 = $('<h1>').html('You have already charged.');
+      $text.append($h1);
+      $text.on('click', function() {
+        $text.empty();
+        $text.unbind('click');
+        playerTurn();
+      });
     } else if (charged === false) {
       charged = true;
       currentCharacter.currentTp -= currentTechnique.tpCost;
       $('#tp').html(currentCharacter.currentTp + '/' + currentCharacter.maxTp);
-      console.log('You are charging up for a powerful attack');
-      checkArmor();
+      var $h1 = $('<h1>').html('You are charging up for a powerful attack!');
+      $text.append($h1);
+      $text.on('click', function() {
+        $text.empty();
+        $text.unbind('click');
+        checkArmor();
+      });
     };
   };
 };
 
 var shedArmor = function(i) {
+  $attack.unbind('click');
+  $techniques.unbind('click');
+  $items.unbind('click');
   var currentTechnique = allTechniques[i];
   if (currentCharacter.currentTp < currentTechnique.tpCost) {
-    console.log('You do not have enough TP to use this move');
-    playerTurn();
+    var $h1 = $('<h1>').html('You do not have enough TP to use this move.');
+    $text.append($h1);
+    $text.on('click', function() {
+      $text.empty();
+      $text.unbind('click');
+      playerTurn();
+    });
   } else {
     if (armored === false) {
-      console.log('You have already discarded your armor');
-      playerTurn();
+      var $h1 = $('<h1>').html('You have already discarded your armor.');
+      $text.append($h1);
+      $text.on('click', function() {
+        $text.empty();
+        $text.unbind('click');
+        playerTurn();
+      });
     } else if (armored === true) {
       currentCharacter.currentTp -= currentTechnique.tpCost;
       $('#tp').html(currentCharacter.currentTp + '/' + currentCharacter.maxTp);
       armored = false;
-      console.log('You have discarded your armor');
-      currentCharacter.currentDefense /= 2;
-      enemyAttack();
+      var $h1 = $('<h1>').html('You have discarded your armor to increase your speed.');
+      $text.append($h1);
+      $text.on('click', function() {
+        $text.empty();
+        $text.unbind('click');
+        currentCharacter.currentDefense /= 2;
+        enemyAttack();
+      });
     };
   };
 };
@@ -204,7 +325,13 @@ var checkArmor = function() {
   if (armored === false) {
     currentCharacter.actions += 1;
     if (currentCharacter.actions % 2 === 0) {
-      playerTurn();
+      var $h1 = $('<h1>').html('Attack again!');
+      $text.append($h1);
+      $text.on('click', function() {
+        $text.empty();
+        $text.unbind('click');
+        playerTurn();
+      });
     } else {
       enemyAttack();
     };
@@ -214,38 +341,72 @@ var checkArmor = function() {
 };
 
 var healthPotion = function() {
+  $attack.unbind('click');
+  $techniques.unbind('click');
+  $items.unbind('click');
   currentCharacter.currentHp += currentCharacter.maxHp / 2;
   if (currentCharacter.currentHp > currentCharacter.maxHp) {
     currentCharacter.currentHp = currentCharacter.maxHp;
   };
-  console.log('Regained ' + currentCharacter.maxHp / 2 + ' HP');
-  $('#hp').html(currentCharacter.currentHp + '/' + currentCharacter.maxHp);
-  enemyAttack();
+  var $h1 = $('<h1>').html('Regained ' + currentCharacter.maxHp / 2 + ' HP');
+  $text.append($h1);
+  $text.on('click', function() {
+    $text.empty();
+    $text.unbind('click');
+    $('#hp').html(currentCharacter.currentHp + '/' + currentCharacter.maxHp);
+    checkArmor();
+  });
 };
 
 var staminaPotion = function() {
+  $attack.unbind('click');
+  $techniques.unbind('click');
+  $items.unbind('click');
   currentCharacter.currentTp += currentCharacter.maxTp / 2;
   if (currentCharacter.currentTp > currentCharacter.maxTp) {
     currentCharacter.currentTp = currentCharacter.maxTp;
   };
-  console.log('Regained ' + currentCharacter.maxTp / 2 + ' TP');
-  $('#tp').html(currentCharacter.currentTp + '/' + currentCharacter.maxTp);
-  enemyAttack();
+  var $h1 = $('<h1>').html('Regained ' + currentCharacter.maxTp / 2 + ' TP');
+  $text.append($h1);
+  $text.on('click', function() {
+    $text.empty();
+    $text.unbind('click');
+    $('#tp').html(currentCharacter.currentTp + '/' + currentCharacter.maxTp);
+    checkArmor();
+  });
 };
 
 var maxPotion = function() {
+  $attack.unbind('click');
+  $techniques.unbind('click');
+  $items.unbind('click');
   currentCharacter.currentHp = currentCharacter.maxHp;
   currentCharacter.currentTp = currentCharacter.maxTp;
-  console.log('HP and TP fully restored');
-  $('#hp').html(currentCharacter.currentHp + '/' + currentCharacter.maxHp);
-  $('#tp').html(currentCharacter.currentTp + '/' + currentCharacter.maxTp);
-  enemyAttack();
+  var $h1 = $('<h1>').html('HP and TP fully restored');
+  $text.append($h1);
+  $text.on('click', function() {
+    $text.empty();
+    $text.unbind('click');
+    $('#hp').html(currentCharacter.currentHp + '/' + currentCharacter.maxHp);
+    $('#tp').html(currentCharacter.currentTp + '/' + currentCharacter.maxTp);
+    checkArmor();
+  });
 };
 
 var checkWin = function() {
   if (currentEnemy.currentHp <= 0) {
     $enemy.empty();
-    gainExperience();
+    var $h1 = $('<h1>').html('Congratulations! You defeated the ' + currentEnemy.name + "!");
+    $text.append($h1);
+    $text.on('click', function() {
+      $text.empty();
+      $text.unbind('click');
+      if (enemyNumber === enemyList.length) {
+        winGame();
+      } else {
+        gainExperience();
+      };
+    });
   } else {
     checkArmor();
   };
@@ -254,50 +415,128 @@ var checkWin = function() {
 var gainExperience = function() {
   armored = true;
   currentCharacter.actions = 1;
-  console.log(currentCharacter.name + ' gained ' + currentEnemy.expYield + ' experience');
-  currentCharacter.exp += currentEnemy.expYield;
-  if (currentCharacter.exp >= 400) {
-    levelFive();
-  } else if (currentCharacter.exp >= 200) {
-    levelFour();
-  } else if (currentCharacter.exp >= 100) {
-    levelThree();
-  } else if (currentCharacter.exp >= 50) {
-    levelTwo();
-  } else {
-    currentCharacter.currentDefense = currentCharacter.defense;
-    $.get('/enemies/', renderEnemy, 'json');
-  };
+  var $h1 = $('<h1>').html(currentCharacter.name + ' gained ' + currentEnemy.expYield + ' exp.');
+  $text.append($h1);
+  $text.on('click', function() {
+    $text.empty();
+    $text.unbind('click');
+    currentCharacter.exp += currentEnemy.expYield;
+    if (currentCharacter.exp >= 400) {
+      levelFive();
+    } else if (currentCharacter.exp >= 200) {
+      levelFour();
+    } else if (currentCharacter.exp >= 100) {
+      levelThree();
+    } else if (currentCharacter.exp >= 50) {
+      levelTwo();
+    } else {
+      currentCharacter.currentDefense = currentCharacter.defense;
+      $.get('/enemies/', renderEnemy, 'json');
+    };
+  });
 };
 
 var levelTwo = function() {
-  console.log(currentCharacter.name + ' has reached Level 2!');
-  currentCharacter.attack = 20;
-  currentCharacter.defense = 15;
-  currentCharacter.currentDefense = currentCharacter.defense;
-  $.get('/enemies/', renderEnemy, 'json');
+  var $h1 = $('<h1>').html(currentCharacter.name + ' has reached Level 2!');
+  $text.append($h1);
+  $text.on('click', function() {
+    $text.empty();
+    $text.unbind('click');
+    currentCharacter.attack = 225;
+    var $h1 = $('<h1>').html(currentCharacter.name + "'s attack has increased to " + currentCharacter.attack + ".");
+    $text.append($h1);
+    $text.on('click', function() {
+      $text.empty();
+      $text.unbind('click');
+      currentCharacter.defense = 175;
+      currentCharacter.currentDefense = currentCharacter.defense;
+      var $h1 = $('<h1>').html(currentCharacter.name + "'s defense has increased to " + currentCharacter.defense + ".");
+      $text.append($h1);
+      $text.on('click', function() {
+        $text.empty();
+        $text.unbind('click');
+        $.get('/enemies/', renderEnemy, 'json');
+      });
+    });
+  });
 };
 
 var levelThree = function() {
-  console.log(currentCharacter.name + ' has reached Level 3!');
-  currentCharacter.currentDefense = currentCharacter.defense;
-  allTechniques[1].availability = true;
-  $.get('/enemies/', renderEnemy, 'json');
+  var $h1 = $('<h1>').html(currentCharacter.name + ' has reached Level 3!');
+  $text.append($h1);
+  $text.on('click', function() {
+    $text.empty();
+    $text.unbind('click');
+    currentCharacter.currentDefense = currentCharacter.defense;
+    allTechniques[1].availability = true;
+    var $h1 = $('<h1>').html(currentCharacter.name + ' has learned ' + allTechniques[1].name + '!');
+    $text.append($h1);
+    $text.on('click', function() {
+      $text.empty();
+      $text.unbind('click');
+      $.get('/enemies/', renderEnemy, 'json');
+    });
+  });
 };
 
 var levelFour = function() {
-  console.log(currentCharacter.name + ' has reached Level 4!');
-  currentCharacter.attack = 25;
-  currentCharacter.defense = 20;
-  currentCharacter.currentDefense = currentCharacter.defense;
-  $.get('/enemies/', renderEnemy, 'json');
+  var $h1 = $('<h1>').html(currentCharacter.name + ' has reached Level 4!');
+  $text.append($h1);
+  $text.on('click', function() {
+    $text.empty();
+    $text.unbind('click');
+    currentCharacter.attack = 275;
+    var $h1 = $('<h1>').html(currentCharacter.name + "'s attack has increased to " + currentCharacter.attack + ".");
+    $text.append($h1);
+    $text.on('click', function() {
+      $text.empty();
+      $text.unbind('click');
+      currentCharacter.defense = 225;
+      currentCharacter.currentDefense = currentCharacter.defense;
+      var $h1 = $('<h1>').html(currentCharacter.name + "'s defense has increased to " + currentCharacter.defense + ".");
+      $text.append($h1);
+      $text.on('click', function() {
+        $text.empty();
+        $text.unbind('click');
+        $.get('/enemies/', renderEnemy, 'json');
+      });
+    });
+  });
 };
 
 var levelFive = function() {
-  console.log(currentCharacter.name + ' has reached Level 5!');
-  currentCharacter.currentDefense = currentCharacter.defense;
-  allTechniques[2].availability = true;
-  $.get('/enemies/', renderEnemy, 'json');
+  var $h1 = $('<h1>').html(currentCharacter.name + ' has reached Level 5!');
+  $text.append($h1);
+  $text.on('click', function() {
+    $text.empty();
+    $text.unbind('click');
+    currentCharacter.currentDefense = currentCharacter.defense;
+    allTechniques[2].availability = true;
+    var $h1 = $('<h1>').html(currentCharacter.name + ' has learned ' + allTechniques[2].name + '!');
+    $text.append($h1);
+    $text.on('click', function() {
+      $text.empty();
+      $text.unbind('click');
+      $.get('/enemies/', renderEnemy, 'json');
+    });
+  });
+};
+
+var winGame = function() {
+  var $h1 = $('<h1>').html('Congratulations! You have successfully completed your quest!');
+  $text.append($h1);
+  $text.on('click', function() {
+    $text.empty();
+    $text.unbind('click');
+    var $h1 = $('<h1>').html('I have no idea why you needed to kill the dragon but good job!');
+    $text.append($h1);
+    $text.on('click', function() {
+      $text.empty();
+      $text.unbind('click');
+      $restart.show();
+      $restart.on('click', restartGame);
+    });
+  });
 };
 
 var enemyAttack = function() {
@@ -306,10 +545,15 @@ var enemyAttack = function() {
   var basicDamage = currentEnemy.basicDamage;
   var damageModifier = 0.8 + (Math.random() * (1.2 - 0.8));
   var damage = Math.floor(attack/defense * basicDamage * 2 * damageModifier);
-  console.log('You took ' + damage + ' damage');
-  currentCharacter.currentHp -= damage;
-  $('#hp').html(currentCharacter.currentHp + '/' + currentCharacter.maxHp);
-  checkLoss();
+  var $h1 = $('<h1>').html(currentEnemy.name + ' attacks! You took ' + damage + ' damage!');
+  $text.append($h1);
+  $text.on('click', function() {
+    $text.empty();
+    $text.unbind('click');
+    currentCharacter.currentHp -= damage;
+    $('#hp').html(currentCharacter.currentHp + '/' + currentCharacter.maxHp);
+    checkLoss();
+  });
 };
 
 var checkLoss = function() {
@@ -318,23 +562,40 @@ var checkLoss = function() {
       currentCharacter.currentHp = 0;
       $('#hp').html(currentCharacter.currentHp + '/' + currentCharacter.maxHp);
     };
-    console.log('You are dead');
+    var $h1 = $('<h1>').html('You are dead!');
+    $text.append($h1);
+    $restart.show();
+    $restart.on('click', restartGame);
+    enemyNumber = 0;
+    $attack.hide();
+    $techniques.hide();
+    $items.hide();
+    $('.Character-Select').show();
+    $('.chosen-character').empty();
+    $enemy.empty();
   } else {
     playerTurn();
   };
 };
+
+var restartGame = function() {
+  $text.empty();
+  $.get('/characters/', renderCharacter, 'json');
+}
 
 var enemyNumber = 0;
 var currentCharacter;
 var currentEnemy;
 var $characters = $('.characters');
 var $enemy = $('.enemy');
+var $text = $('.text');
 var $attack = $('.attack');
 var $techniques = $('.techniques');
 var $items = $('.items');
 var $techniqueList = $('.techniques-list');
 var $itemList = $('.items-list');
 var $back = $('<div>').append($('<h3>').html('Back'));
+var $restart = $('.restart');
 var allTechniques;
 var selectedTechnique;
 var allItems;

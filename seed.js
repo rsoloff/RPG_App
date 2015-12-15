@@ -22,9 +22,9 @@ seeder.seed(data, {dropDatabase: false}).then(function(rpgApp) {
 
 var fighter = new Character({
   name              : 'Fighter',
-  attack            : 15,
-  defense           : 10,
-  currentDefense    : 10,
+  attack            : 175,
+  defense           : 125,
+  currentDefense    : 125,
   maxHp             : 1000,
   currentHp         : 1000,
   level             : 1,
@@ -82,7 +82,8 @@ fighter.save(function (err) {
                 fighter.techniques.push(shedArmor._id);
                 var healthPotion1 = new Item({
                   name: 'Health Potion',
-                  description: 'Restores half of your maximum HP.'
+                  description: 'Restores half of your maximum HP.',
+                  used: false
                 });
                 healthPotion1.save(function(err) {
                   if(err){
@@ -92,7 +93,8 @@ fighter.save(function (err) {
                     fighter.items.push(healthPotion1._id);
                     var healthPotion2 = new Item({
                       name: 'Health Potion',
-                      description: 'Restores half of your maximum HP.'
+                      description: 'Restores half of your maximum HP.',
+                      used: false
                     });
                     healthPotion2.save(function(err) {
                       if(err){
@@ -102,7 +104,8 @@ fighter.save(function (err) {
                         fighter.items.push(healthPotion2._id);
                         var staminaPotion1 = new Item({
                           name: 'Stamina Potion',
-                          description: 'Restores half of your maximum TP.'
+                          description: 'Restores half of your maximum TP.',
+                          used: false
                         });
                         staminaPotion1.save(function(err) {
                           if(err){
@@ -112,7 +115,8 @@ fighter.save(function (err) {
                             fighter.items.push(staminaPotion1._id);
                             var staminaPotion2 = new Item({
                               name: 'Stamina Potion',
-                              description: 'Restores half of your maximum TP.'
+                              description: 'Restores half of your maximum TP.',
+                              used: false
                             });
                             staminaPotion2.save(function(err) {
                               if(err){
@@ -122,7 +126,8 @@ fighter.save(function (err) {
                                 fighter.items.push(staminaPotion2._id);
                                 var maxPotion = new Item({
                                   name: 'Max Potion',
-                                  description: 'Restores all of your HP and TP.'
+                                  description: 'Restores all of your HP and TP.',
+                                  used: false
                                 });
                                 maxPotion.save(function(err) {
                                   if(err){
@@ -148,4 +153,4 @@ fighter.save(function (err) {
       }
     })
   }
-})
+});

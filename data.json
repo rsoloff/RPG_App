@@ -3,8 +3,8 @@
     "_model": "Enemy",
     "giantRat": {
       "name": "Giant Rat",
-      "attack": 10,
-      "defense": 10,
+      "attack": 100,
+      "defense": 100,
       "maxHp": 750,
       "currentHp": 750,
       "expYield": 50,
@@ -12,37 +12,37 @@
     },
     "goblin": {
       "name": "Goblin",
-      "attack": 10,
-      "defense": 20,
+      "attack": 100,
+      "defense": 150,
       "maxHp": 1000,
       "currentHp": 1000,
       "expYield": 100,
       "basicDamage": 50
     },
-    "orc": {
-      "name": "Orc",
-      "attack": 20,
-      "defense": 15,
-      "maxHp": 1500,
-      "currentHp": 1500,
+    "troll": {
+      "name": "Troll",
+      "attack": 150,
+      "defense": 150,
+      "maxHp": 1250,
+      "currentHp": 1250,
       "expYield": 200,
       "basicDamage": 75
     },
-    "giantSpider": {
-      "name": "Giant Spider",
-      "attack": 15,
-      "defense": 25,
-      "maxHp": 2000,
-      "currentHp": 2000,
+    "golem": {
+      "name": "Golem",
+      "attack": 175,
+      "defense": 275,
+      "maxHp": 1750,
+      "currentHp": 1750,
       "expYield": 400,
       "basicDamage": 75
     },
     "dragon": {
       "name": "Dragon",
-      "attack": 25,
-      "defense": 20,
-      "maxHp": 2500,
-      "currentHp": 2500,
+      "attack": 275,
+      "defense": 250,
+      "maxHp": 2000,
+      "currentHp": 2000,
       "expYield": 0,
       "basicDamage": 75
     }
