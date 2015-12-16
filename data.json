@@ -3,43 +3,51 @@
     "_model": "Enemy",
     "goblin": {
       "name": "Goblin",
-      "attack": 100,
+      "attack": 125,
       "defense": 100,
       "maxHp": 750,
       "currentHp": 750,
       "expYield": 50,
       "basicDamage": 50,
-      "image": "http://orig05.deviantart.net/b56f/f/2013/227/a/6/goblin_transparent_by_st0ven-d6i8yhd.png"
+      "image": "http://orig05.deviantart.net/b56f/f/2013/227/a/6/goblin_transparent_by_st0ven-d6i8yhd.png",
+      "location": "the forest",
+      "background": "https://illiaworld.files.wordpress.com/2011/12/forest.png"
     },
     "golem": {
       "name": "Golem",
-      "attack": 100,
+      "attack": 125,
       "defense": 150,
       "maxHp": 1000,
       "currentHp": 1000,
       "expYield": 100,
       "basicDamage": 50,
-      "image": "http://vignette3.wikia.nocookie.net/legendarywars/images/8/85/GolemPortraitHD.png/revision/latest?cb=20110830191703"
+      "image": "http://vignette3.wikia.nocookie.net/legendarywars/images/8/85/GolemPortraitHD.png/revision/latest?cb=20110830191703",
+      "location": "the cave",
+      "background": "http://dragoncreatures.com/wp-content/uploads/2014/09/1673431_orig-1038x576.jpg"
     },
     "darkKnight": {
       "name": "Dark Knight",
-      "attack": 150,
+      "attack": 175,
       "defense": 150,
       "maxHp": 1250,
       "currentHp": 1250,
       "expYield": 200,
       "basicDamage": 75,
-      "image": "http://img4.wikia.nocookie.net/__cb20110410161342/finalfantasy/images/a/a2/CecildsNB.png"
+      "image": "http://img4.wikia.nocookie.net/__cb20110410161342/finalfantasy/images/a/a2/CecildsNB.png",
+      "location": "the castle",
+      "background": "http://vignette4.wikia.nocookie.net/finalfantasy/images/e/e9/FFIV_PSP_Frozen_Castle_Interior.png/revision/latest?cb=20131030172346"
     },
     "dragon": {
       "name": "Dragon",
-      "attack": 175,
+      "attack": 200,
       "defense": 275,
       "maxHp": 1750,
       "currentHp": 1750,
       "expYield": 400,
       "basicDamage": 75,
-      "image": "http://pngimg.com/upload/dragon_PNG994.png"
+      "image": "http://static.wixstatic.com/media/9ab103_68e4b70ce8b44ddc8a306f747ad781f3.gif_srz_566_400_85_22_0.50_1.20_0.00_gif_srz",
+      "location": "the mountain",
+      "background": "http://gallery.abyssalchronicles.com/albums/userpics/10002/Reiforc_Art_02.jpg"
     },
     "devil": {
       "name": "Devil",
@@ -49,7 +57,9 @@
       "currentHp": 2000,
       "expYield": 0,
       "basicDamage": 75,
-      "image": "http://i31.tinypic.com/29d8vub.jpg"
+      "image": "http://i31.tinypic.com/29d8vub.jpg",
+      "location": "Hell",
+      "background": "http://redandblackwallpapers.com/wallpapers/roadtohell/wide.jpg"
     }
   }
 }

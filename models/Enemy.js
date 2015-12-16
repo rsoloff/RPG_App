@@ -8,7 +8,9 @@ var EnemySchema = new mongoose.Schema({
   currentHp     : Number,
   expYield      : Number,
   basicDamage   : Number,
-  image         : String
+  image         : String,
+  location      : String,
+  background    : String
 });
 
 var Enemy = mongoose.model('Enemy', EnemySchema);
