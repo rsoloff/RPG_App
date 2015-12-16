@@ -1,13 +1,11 @@
 $(document).ready(function() {
   $.get('/characters/', renderCharacter, 'json');
-  $attack.hide();
-  $techniques.hide();
-  $items.hide();
 });
 
 var renderCharacter = function(data) {
   $('body').css('backgroundImage', "url(http://3.bp.blogspot.com/-QTB_xjfnAzo/UQBy1pG9wKI/AAAAAAAAASI/__hGyjbozgU/s1600/scroll+w+grid.bmp)");
   $('.Character-Select').show();
+  $('.container').hide()
   $attack.hide();
   $techniques.hide();
   $items.hide();
@@ -24,6 +22,7 @@ var renderCharacter = function(data) {
     $characters.append($character);
     var selected = characterList[i];
     $character.on('click', function() {
+      $('.container').show();
       currentCharacter = selected;
       var $h2 = $('<h2>');
       $h2.html(currentCharacter.name);
@@ -138,7 +137,6 @@ var itemMenu = function() {
 };
 
 var chooseTechnique = function() {
-  //$text.empty();
   $techniqueList.empty();
   allTechniques.forEach(function (dummy, i) {
     var possibleTechnique = allTechniques[i];
@@ -147,7 +145,7 @@ var chooseTechnique = function() {
       $h4.html(allTechniques[i].name + ': ' + allTechniques[i].tpCost + ' TP');
       $h4.attr('listing', i);
       $techniqueList.append($h4);
-      $h4.click(function() {
+      $h4.on('click', function() {
         var choice = $h4.attr('listing');
         useTechnique(choice);
       });
@@ -161,7 +159,6 @@ var chooseTechnique = function() {
 };
 
 var chooseItem = function() {
-  //$text.empty();
   $itemList.empty();
   allItems.forEach(function (dummy, i) {
     var possibleItem = allItems[i];
@@ -170,7 +167,7 @@ var chooseItem = function() {
       $h4.html(allItems[i].name);
       $h4.attr('listing', i);
       $itemList.append($h4);
-      $h4.click(function() {
+      $h4.on('click', function() {
         var choice = $h4.attr('listing');
         useItem(choice);
       });

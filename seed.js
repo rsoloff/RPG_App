@@ -13,6 +13,7 @@ db.once('open', function() {
   console.log('mongoose connected')
 });
 
+//Takes enemy data from data.json to seed them into database
 seeder.seed(data, {dropDatabase: false}).then(function(rpgApp) {
   console.log('database has been seeded');
   mongoose.connection.close();
@@ -21,6 +22,7 @@ seeder.seed(data, {dropDatabase: false}).then(function(rpgApp) {
   mongoose.connection.close();
 });
 
+//Creates a new character with their stats
 var fighter = new Character({
   name              : 'Fighter',
   attack            : 175,
@@ -38,6 +40,7 @@ var fighter = new Character({
   image             : "http://vignette2.wikia.nocookie.net/dissidiadreamcharacters/images/6/6d/Warrior_of_Light_(Alt_2_EX_Mode).png/revision/latest/scale-to-width-down/378?cb=20130702003901"
 });
 
+//Seeds the character, with his abilities and items, into the database
 fighter.save(function (err) {
   if(err){
     console.log(err)
