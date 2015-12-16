@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 
+//Schema with all the attributes for the character model
 var CharacterSchema = new mongoose.Schema({
   name              : String,
   attack            : Number,
@@ -24,8 +25,6 @@ var CharacterSchema = new mongoose.Schema({
       type : mongoose.Schema.Types.ObjectId
   }]
 });
-
-//CharacterSchema.methods.
 
 var Character = mongoose.model('Character', CharacterSchema);
 

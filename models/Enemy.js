@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 
+//Schema with all the attributes for the enemy model
 var EnemySchema = new mongoose.Schema({
   name          : String,
   attack        : Number,

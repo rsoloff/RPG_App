@@ -1,5 +1,6 @@
 var Enemy = require('../models/Enemy');
 
+//Route to get all the enemies. Used to decide which enemy is fought
 function getAllEnemies(req, res) {
   Enemy.find(function(err, enemies) {
     if (err) res.json({message: err + '. Could not get enemies'});
@@ -31,6 +32,7 @@ function updateEnemy(req, res) {
   });
 }
 
+//All are exported for use by routes.js
 module.exports = {
   getAllEnemies : getAllEnemies,
   getEnemy      : getEnemy,

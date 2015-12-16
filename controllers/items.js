@@ -1,5 +1,6 @@
 var Item = require('../models/Item');
 
+//Route to get all the items. All items are given to the current character
 function getAllItems(req, res) {
   Item.find(function(err, items) {
     if (err) res.json({message: err + '. Could not get items'});
@@ -31,6 +32,7 @@ function removeItem(req, res) {
   });
 }
 
+//All are exported for use by routes.js
 module.exports = {
   getAllItems   : getAllItems,
   createItem    : createItem,

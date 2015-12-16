@@ -1,5 +1,6 @@
 var Technique = require('../models/Technique');
 
+//Route to get all the items. All items are given to the current character
 function getAllTechniques(req, res) {
   Technique.find(function(err, techniques) {
     if (err) res.json({message: err + '. Could not get techniques'});
@@ -31,6 +32,7 @@ function updateTechnique(req, res) {
   });
 }
 
+//All are exported for use by routes.js
 module.exports = {
   getAllTechniques  : getAllTechniques,
   getTechnique      : getTechnique,

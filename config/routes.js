@@ -2,6 +2,7 @@ var express    = require('express');
 var router     = express.Router();
 var bodyParser = require('body-parser');
 
+//gets routes from other controllers
 var charactersController = require('../controllers/characters');
 var enemiesController    = require('../controllers/enemies');
 var itemsController      = require('../controllers/items');

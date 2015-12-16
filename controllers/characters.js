@@ -1,5 +1,6 @@
 var Character = require('../models/Character');
 
+//Route to get all the characters. Used for character select
 function getAllCharacters(req, res) {
   Character.find(function(err, characters) {
     if (err) res.json({message: err + '. Could not get characters'});
@@ -38,6 +39,7 @@ function updateCharacter(req, res) {
   });
 }
 
+//All are exported for use by routes.js
 module.exports = {
   getAllCharacters  : getAllCharacters,
   getCharacter      : getCharacter,
