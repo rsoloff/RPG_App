@@ -40,7 +40,7 @@
     "dragon": {
       "name": "Dragon",
       "attack": 200,
-      "defense": 250,
+      "defense": 225,
       "maxHp": 1750,
       "currentHp": 1750,
       "expYield": 400,
