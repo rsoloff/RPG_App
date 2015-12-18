@@ -27,7 +27,7 @@
     },
     "darkKnight": {
       "name": "Dark Knight",
-      "attack": 175,
+      "attack": 150,
       "defense": 150,
       "maxHp": 1250,
       "currentHp": 1250,
@@ -39,8 +39,8 @@
     },
     "dragon": {
       "name": "Dragon",
-      "attack": 200,
-      "defense": 225,
+      "attack": 175,
+      "defense": 200,
       "maxHp": 1750,
       "currentHp": 1750,
       "expYield": 400,
@@ -51,8 +51,8 @@
     },
     "devil": {
       "name": "Devil",
-      "attack": 250,
-      "defense": 250,
+      "attack": 225,
+      "defense": 225,
       "maxHp": 2000,
       "currentHp": 2000,
       "expYield": 0,
