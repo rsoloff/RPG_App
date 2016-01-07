@@ -3,7 +3,7 @@
 A turn-based RPG without a creative name. Players choose a character to survive an onslaught of enemies with limited items, gaining strength and abilities as they go along.
 
 ### Screenshot
-  - ![RPG App](http://i.imgur.com/cJSFAR4.png)
+  ![RPG App](http://i.imgur.com/iOF46nz.png)
 
 ### Technologies Used
   - Node/express
